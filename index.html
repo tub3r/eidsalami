@@ -11,66 +11,62 @@ body {
     text-align: center;
     color: white;
     margin: 0;
-    height: 100vh;
+    min-height: 100vh;
     background: linear-gradient(135deg, #0f172a, #1e3a8a, #0f766e);
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 /* Moon */
 body::before {
     content: "";
     position: absolute;
-    top: 60px;
-    right: 80px;
-    width: 120px;
-    height: 120px;
+    top: 40px;
+    right: 30px;
+    width: 80px;
+    height: 80px;
     background: #fef08a;
     border-radius: 50%;
-    box-shadow: 0 0 40px rgba(255,255,150,0.6);
+    box-shadow: 0 0 25px rgba(255,255,150,0.6);
 }
 
 body::after {
     content: "";
     position: absolute;
-    top: 60px;
-    right: 60px;
-    width: 120px;
-    height: 120px;
+    top: 40px;
+    right: 20px;
+    width: 80px;
+    height: 80px;
     background: #0f172a;
     border-radius: 50%;
 }
 
 /* Stars */
-.stars {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-}
-
 .stars span {
     position: absolute;
-    width: 3px;
-    height: 3px;
+    width: 2px;
+    height: 2px;
     background: white;
     border-radius: 50%;
-    opacity: 0.8;
 }
 
 /* Title */
 h1 {
-    margin-top: 20px;
+    margin-top: 15px;
+    font-size: 20px;
 }
 
 /* Wheel */
 #wheel {
-    margin: 30px auto;
+    margin: 20px auto;
     border-radius: 50%;
-    border: 8px solid #fff;
-    width: 320px;
-    height: 320px;
+    border: 5px solid #fff;
+    width: 85vw;
+    height: 85vw;
+    max-width: 300px;
+    max-height: 300px;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 0 25px rgba(255,255,255,0.5);
+    box-shadow: 0 0 20px rgba(255,255,255,0.4);
 }
 
 .segment {
@@ -82,40 +78,41 @@ h1 {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 12px;
+    font-size: 10px;
 }
 
 /* Pointer */
 #pointer {
     width: 0;
     height: 0;
-    border-left: 15px solid transparent;
-    border-right: 15px solid transparent;
-    border-bottom: 25px solid red;
-    margin: 0 auto;
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+    border-bottom: 20px solid red;
+    margin: 10px auto;
 }
 
 /* Button */
 #spinBtn {
-    padding: 12px 25px;
+    padding: 14px 30px;
     font-size: 18px;
     background: #22c55e;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     cursor: pointer;
-    box-shadow: 0 0 15px rgba(34,197,94,0.6);
+    box-shadow: 0 0 10px rgba(34,197,94,0.6);
 }
 
 /* Result */
 #result {
-    margin-top: 20px;
+    margin-top: 15px;
+    font-size: 18px;
 }
 
 /* Footer */
 footer {
-    margin-top: 40px;
-    font-size: 14px;
-    opacity: 0.8;
+    margin-top: 25px;
+    font-size: 12px;
+    opacity: 0.7;
 }
 </style>
 </head>
@@ -136,21 +133,21 @@ footer {
 <footer>created by Md. Asif Jahan</footer>
 
 <script>
-// ⭐ Generate Stars
+// ⭐ Stars
 const starsContainer = document.getElementById("stars");
-for (let i = 0; i < 60; i++) {
+for (let i = 0; i < 50; i++) {
     let star = document.createElement("span");
     star.style.top = Math.random() * 100 + "%";
     star.style.left = Math.random() * 100 + "%";
     starsContainer.appendChild(star);
 }
 
-// 🎯 Wheel Options (17)
+// 🎯 Options
 const options = [
-"0 Taka","1 Taka","2 Taka","3 Taka","4 Taka","5 Taka",
-"0 Taka","1 Taka","2 Taka","3 Taka","4 Taka","5 Taka",
-"0 Taka","1 Taka","2 Taka","3 Taka","5 Taka"
-];
+"0","1","2","3","4","5",
+"0","1","2","3","4","5",
+"0","1","2","3","5"
+].map(v => v + " Taka");
 
 const wheel = document.getElementById("wheel");
 const segmentAngle = 360 / options.length;
@@ -161,13 +158,17 @@ options.forEach((opt, i) => {
     seg.className = "segment";
     seg.style.background = `hsl(${i * 20}, 70%, 50%)`;
     seg.style.transform = `rotate(${i * segmentAngle}deg) skewY(${90 - segmentAngle}deg)`;
-    seg.innerHTML = `<span style="transform: skewY(-${90 - segmentAngle}deg) rotate(${segmentAngle/2}deg); display:block;">${opt}</span>`;
+    seg.innerHTML = `<span style="
+        transform: skewY(-${90 - segmentAngle}deg) rotate(${segmentAngle/2}deg);
+        display:block;
+        font-size:10px;
+    ">${opt}</span>`;
     wheel.appendChild(seg);
 });
 
 let currentRotation = 0;
 
-// Spin logic
+// Spin
 document.getElementById("spinBtn").onclick = function() {
     const randomSpin = Math.floor(Math.random() * 360) + 1440;
     currentRotation += randomSpin;
