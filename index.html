@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Select your Eid Salami</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: #0f172a;
+    color: white;
+}
+
+h1 {
+    margin-top: 20px;
+}
+
+#wheel {
+    margin: 30px auto;
+    border-radius: 50%;
+    border: 8px solid #fff;
+    width: 320px;
+    height: 320px;
+    position: relative;
+    overflow: hidden;
+}
+
+.segment {
+    position: absolute;
+    width: 50%;
+    height: 50%;
+    transform-origin: 100% 100%;
+    clip-path: polygon(0 0, 100% 0, 100% 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+}
+
+#spinBtn {
+    padding: 12px 25px;
+    font-size: 18px;
+    background: #22c55e;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+#pointer {
+    width: 0;
+    height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-bottom: 25px solid red;
+    margin: 0 auto;
+}
+
+footer {
+    margin-top: 40px;
+    font-size: 14px;
+    opacity: 0.7;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Select your Eid Salami</h1>
+
+<div id="pointer"></div>
+<div id="wheel"></div>
+
+<button id="spinBtn">Spin</button>
+
+<h2 id="result"></h2>
+
+<footer>created by Md. Asif Jahan</footer>
+
+<script>
+const options = [
+"0 Taka","1 Taka","2 Taka","3 Taka","4 Taka","5 Taka",
+"0 Taka","1 Taka","2 Taka","3 Taka","4 Taka","5 Taka",
+"0 Taka","1 Taka","2 Taka","3 Taka","5 Taka"
+];
+
+const wheel = document.getElementById("wheel");
+const segmentAngle = 360 / options.length;
+
+// create segments
+options.forEach((opt, i) => {
+    const seg = document.createElement("div");
+    seg.className = "segment";
+    seg.style.background = `hsl(${i * 20}, 70%, 50%)`;
+    seg.style.transform = `rotate(${i * segmentAngle}deg) skewY(${90 - segmentAngle}deg)`;
+    seg.innerHTML = `<span style="transform: skewY(-${90 - segmentAngle}deg) rotate(${segmentAngle/2}deg); display:block;">${opt}</span>`;
+    wheel.appendChild(seg);
+});
+
+let currentRotation = 0;
+
+document.getElementById("spinBtn").onclick = function() {
+    const randomSpin = Math.floor(Math.random() * 360) + 1440; // extra spins
+    currentRotation += randomSpin;
+
+    wheel.style.transition = "transform 4s ease-out";
+    wheel.style.transform = `rotate(${currentRotation}deg)`;
+
+    setTimeout(() => {
+        const actualDeg = currentRotation % 360;
+        const index = Math.floor((360 - actualDeg) / segmentAngle) % options.length;
+        document.getElementById("result").innerText = "You got: " + options[index];
+    }, 4000);
+};
+</script>
+
+</body>
+</html>
